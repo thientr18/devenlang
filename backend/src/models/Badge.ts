@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
-import { IBadge, IUserBadge, BadgeType } from '../types';
+import { BadgeType } from '../types/enums';
+import { IBadge, IUserBadge } from '../types/model.types';
 
 const badgeSchema = new Schema<IBadge>(
   {

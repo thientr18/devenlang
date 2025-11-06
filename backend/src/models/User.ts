@@ -1,32 +1,44 @@
 import mongoose, { Schema, Model } from 'mongoose';
-import { IUser, UserRole, LanguageLevel } from '../types';
+import { LanguageLevel } from '../types/enums';
+import { IUser } from '../types/model.types';
 
 const userSchema = new Schema<IUser>(
   {
+    // Auth identity (Auth0)
+    authProvider: {
+      type: String,
+      enum: ['auth0'],
+      default: 'auth0',
+      required: true,
+      index: true
+    },
+    auth0Id: {
+      type: String, // Auth0 "sub"
+      required: true,
+      unique: true,
+      index: true
+    },
+
+    // Profile
     email: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true,
       trim: true,
       index: true
     },
-    passwordHash: {
-      type: String,
-      required: true,
-      select: false // Don't return password by default
+    emailVerified: {
+      type: Boolean,
+      default: false
     },
     fullName: {
       type: String,
       required: true,
       trim: true
     },
-    role: {
-      type: String,
-      enum: Object.values(UserRole),
-      default: UserRole.LEARNER,
-      index: true
-    },
+    picture: String,
+
+    // App fields
     languageLevel: {
       type: String,
       enum: Object.values(LanguageLevel)
@@ -35,7 +47,7 @@ const userSchema = new Schema<IUser>(
       type: Number,
       default: 0,
       min: 0,
-      index: true // For leaderboards
+      index: true // Leaderboards
     },
     currentStreak: {
       type: Number,
@@ -63,7 +75,10 @@ const userSchema = new Schema<IUser>(
         default: true
       }
     },
+
+    // Status / timestamps
     lastLoginAt: Date,
+    lastAuthSyncAt: Date,
     isActive: {
       type: Boolean,
       default: true,
@@ -76,9 +91,10 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// Indexes for performance
+// Indexes
+userSchema.index({ auth0Id: 1 }, { unique: true });
 userSchema.index({ email: 1 });
-userSchema.index({ totalXP: -1 }); // Leaderboard queries
+userSchema.index({ totalXP: -1 });
 userSchema.index({ createdAt: -1 });
 
 export const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);

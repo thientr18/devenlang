@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model } from 'mongoose';
-import { IProgress, ILessonProgress, IQuizAttempt } from '../types';
+import { IProgress, ILessonProgress, IQuizAttempt } from '../types/model.types';
 
 const lessonProgressSchema = new Schema<ILessonProgress>(
   {

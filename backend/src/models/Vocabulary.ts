@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
-import { IVocabulary, PartOfSpeech, DifficultyLevel } from '../types';
+import { DifficultyLevel, PartOfSpeech } from '../types/enums';
+import { IVocabulary } from '../types/model.types';
 
 const vocabularySchema = new Schema<IVocabulary>(
   {

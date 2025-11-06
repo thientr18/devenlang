@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
-import { IQuiz, IQuizQuestion, QuizType, DifficultyLevel } from '../types';
+import { DifficultyLevel, QuizType } from '../types/enums';
+import { IQuiz, IQuizQuestion } from '../types/model.types';
 
 const quizQuestionSchema = new Schema<IQuizQuestion>(
   {

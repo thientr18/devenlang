@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model } from 'mongoose';
-import { ITopic } from '../types';
+import { ITopic } from '../types/model.types';
 
 const topicSchema = new Schema<ITopic>(
   {
